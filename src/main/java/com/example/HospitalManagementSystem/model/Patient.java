@@ -2,31 +2,37 @@ package com.example.HospitalManagementSystem.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "patient")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer patientId;
-    @Min(value = 3)
+    @Length(min = 3)
     private String patientName;
-    @Max(value = 20)
+    @Length(max = 20)
     private String patientCity;
     @Email
     private String patientEmail;
-    @Min(value = 10)
-    @Pattern(regexp = "\\d{2}-\\d{10}", message = "Phone number should be in the format XX-XXXXXXXXXX first two digit will be country code other will be 10 digit phone number")
+    private String patientPassword;
+    @Length(min = 10)
     private String patientContact;
-    private String symtoms;
+    @Enumerated(EnumType.STRING)
+    private Symptoms symptoms;
 
+    public Patient(String patientName, String patientCity, String patientEmail, String patientContact, Symptoms symptoms) {
+        this.patientName = patientName;
+        this.patientCity = patientCity;
+        this.patientEmail = patientEmail;
+        this.patientContact = patientContact;
+        this.symptoms = symptoms;
+    }
 }
